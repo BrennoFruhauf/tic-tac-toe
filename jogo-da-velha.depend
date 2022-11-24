@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1669261735 source:d:\faculdade\programação estruturada\projeto final\projetofinal\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<string.h>
+	<ctype.h>
+	<windows.h>
+
+1669310748 source:d:\faculdade\programaÃ§Ã£o estruturada\projeto final\projetofinal\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<string.h>
+	<ctype.h>
+	<windows.h>
+
