@@ -27,7 +27,9 @@ int main()
 {
   // Registrando Funções Criadas após o MAIN
   void limpar_tela();
+  void ordenarJogadores();
   void exibirTabela();
+
   // Definindo a localização do idioma
    setlocale(LC_ALL, "Portuguese_Brazil");
 
@@ -55,22 +57,39 @@ int main()
     switch (option)
     {
       case 1:
-        for (int i = 0; i < 2; i++)
+        // Incrementa sempre que iniciar um novo jogo para cadastrar um novo jogador
+        id += 1;
+        if (id < PLAYERS)
         {
-          // Incrementa sempre que for cadastrar um novo jogador
-          id += 1;
-          if (i == 0)
-            jogadorUm = id;
-          else
-            jogadorDois = id;
-          printf("Informe o nome dos jogadores:\n");
-          printf("%d Jogador: ", i + 1);
-          fgets(jogador[id].nome, 25, stdin);
-          fflush(stdin);
-          // Remove a quebra de linha da string
-          jogador[id].nome[strlen(jogador[id].nome) - 1] = '\0';
-          limpar_tela();
-        }
+          for (int i = 0; i < 2; i++)
+          {
+            if (i == 0)
+              jogadorUm = id;
+            else
+              jogadorDois = id;
+            printf("Informe o nome dos jogadores:\n");
+            printf("%d Jogador: ", i + 1);
+            fgets(jogador[id].nome, 25, stdin);
+            fflush(stdin);
+            // Remove a quebra de linha da string
+            jogador[id].nome[strlen(jogador[id].nome) - 1] = '\0';
+            // Inicializa WIN, LOSE e DRAW em zero
+            jogador[id].vitoria = 0;
+            jogador[id].derrota = 0;
+            jogador[id].empate = 0;
+            limpar_tela();
+          }
+        } else
+          {
+            printf("Limite máximo de cadastro atingido!\n");
+            printf("\nAguarde");
+            for (int i = 0; i < 5; i++)
+            {
+              Sleep(500);
+              printf(" .");
+            }
+            limpar_tela();
+          }
 
         limpar_tela();
         break;
@@ -125,12 +144,38 @@ void limpar_tela()
   #endif // _WIN32
 }
 
-
 // Função para exibir a tabela do placar de todos jogadores registrados
 void exibirTabela()
 {
+  // Declaração de variaveis locais da função
+  float porcentagemWin[PLAYERS];
+  int ordemJogador[PLAYERS], aux;
+
+  // Armazenar os dados de comparação e organização dos jogadores
+  for (int i = 0; i <= id; i++)
+  {
+    ordemJogador[i] = i;
+    // Calcular a porcentagem de WIN em comparação a LOSE e DRAW
+    porcentagemWin[i] = (float) jogador[i].vitoria * 100 / (jogador[i].vitoria + jogador[i].derrota + jogador[i].empate);
+  }
+
+  // Ordenação do melhor para o pior jogador
+  for (int i = 0; i <= id; i++)
+  {
+    for (int j = i; j <= id; j++)
+    {
+      if (porcentagemWin[i] < porcentagemWin[j])
+      {
+        aux = ordemJogador[i];
+        ordemJogador[i] = ordemJogador[j];
+        ordemJogador[j] = aux;
+      }
+    }
+  }
+
   char indiceString[4];
   int difCaracteres = 0;
+  // Inicia a Exibição da Tabela
   printf("==================================================================================\n");
   printf("||   Posição   ||            Nome            ||   Win   ||   Lose   ||   Draw   ||\n");
   printf("==================================================================================");
@@ -143,7 +188,8 @@ void exibirTabela()
     else if (strlen(indiceString) == 2)
       printf("\n||     %d°     ||", i+1);
 
-    difCaracteres = 28 - strlen(jogador[i].nome);
+    // Armazena a diferença de caracteres entre a string e a coluna NOME
+    difCaracteres = 28 - strlen(jogador[ordemJogador[i]].nome);
 
     // Exibe a coluna NOME
     if (difCaracteres % 2 != 0)
@@ -156,7 +202,7 @@ void exibirTabela()
           printf(" ");
         }
         if (j == 0)
-          printf("%s", jogador[i].nome);
+          printf("%s", jogador[ordemJogador[i]].nome);
       }
       printf("||");
     } else
@@ -169,30 +215,32 @@ void exibirTabela()
           printf(" ");
         }
         if (j == 0)
-          printf("%s", jogador[i].nome);
+          printf("%s", jogador[ordemJogador[i]].nome);
       }
       printf("||");
       }
 
-    // Exibe os Resultados
     char resultado[4];
-    sprintf(resultado, "%d", jogador[i].vitoria);
+    // Exibe a coluna WIN
+    sprintf(resultado, "%d", jogador[ordemJogador[i]].vitoria);
     if (strlen(resultado) == 1)
-      printf("    %d    ||", jogador[i].vitoria);
+      printf("    %d    ||", jogador[ordemJogador[i]].vitoria);
     else if (strlen(resultado) == 2)
-      printf("   %d    ||", jogador[i].derrota);
+      printf("   %d    ||", jogador[ordemJogador[i]].derrota);
 
-    sprintf(resultado, "%d", jogador[i].derrota);
+    // Exibe a coluna LOSE
+    sprintf(resultado, "%d", jogador[ordemJogador[i]].derrota);
     if (strlen(resultado) == 1)
-      printf("     %d    ||", jogador[i].derrota);
+      printf("     %d    ||", jogador[ordemJogador[i]].derrota);
     else if (strlen(resultado) == 2)
-      printf("    %d   ||", jogador[i].derrota);
+      printf("    %d   ||", jogador[ordemJogador[i]].derrota);
 
-    sprintf(resultado, "%d", jogador[i].empate);
+    // Exibe a coluna DRAW
+    sprintf(resultado, "%d", jogador[ordemJogador[i]].empate);
     if (strlen(resultado) == 1)
-      printf("     %d    ||", jogador[i].empate);
+      printf("     %d    ||", jogador[ordemJogador[i]].empate);
     else if (strlen(resultado) == 2)
-      printf("    %d   ||", jogador[i].empate);
+      printf("    %d   ||", jogador[ordemJogador[i]].empate);
   }
   printf("\n==================================================================================");
 }
