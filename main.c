@@ -283,8 +283,8 @@ int main() {
           if (aux == 9) {
             jogador[jogadorUm].empate += 1;
             jogador[jogadorDois].empate += 1;
-            printf("\nEMPATE!");
             exibirJogoDaVelha();
+            printf("\n\t\t\t\t\t           EMPATE!\n");
             aguardar(3);
             printf("\n");
             system("pause");
