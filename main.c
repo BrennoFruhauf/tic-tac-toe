@@ -39,6 +39,15 @@ int main() {
   // Declarando variáveis locais do MAIN
   int jogando, jogadorUm, jogadorDois, option, validar, aux, quebrarLoop;
   char simboloJogando, simboloJogadorUm, simboloJogadorDois, optionChar, posicao[5], resposta;
+  // Indice de cada posição do tabuleiro de forma segmentada para logica da vitória
+  int posTab[8][6] = {0, 0, 0, 1, 0, 2,
+                      1, 0, 1, 1, 1, 2,
+                      2, 0, 2, 1, 2, 2,
+                      0, 0, 1, 0, 2, 0,
+                      0, 1, 1, 1, 2, 1,
+                      0, 2, 1, 2, 2, 2,
+                      0, 0, 1, 1, 2, 2,
+                      0, 2, 1, 1, 2, 0};
 
   // Definindo semi loop para o jogo
   do {
@@ -202,123 +211,17 @@ int main() {
                 }
 
                 quebrarLoop = 0;
-                // 1° Forma de ganhar
-                if ((tabuleiro[0][0] == tabuleiro[0][1] && tabuleiro[0][1] == tabuleiro[0][2]) && tabuleiro[0][0] != ' ') {
-                  if (tabuleiro[0][0] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 2° Forma de ganhar
-                if ((tabuleiro[1][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[1][2]) && tabuleiro[1][0] != ' ') {
-                  if (tabuleiro[1][0] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 3° Forma de ganhar
-                if ((tabuleiro[2][0] == tabuleiro[2][1] && tabuleiro[2][1] == tabuleiro[2][2]) && tabuleiro[2][0] != ' ') {
-                  if (tabuleiro[2][0] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 4° Forma de ganhar
-                if ((tabuleiro[0][0] == tabuleiro[1][0] && tabuleiro[1][0] == tabuleiro[2][0]) && tabuleiro[0][0] != ' ') {
-                  if (tabuleiro[0][0] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 5° Forma de ganhar
-                if ((tabuleiro[0][1] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][1]) && tabuleiro[0][1] != ' ') {
-                  if (tabuleiro[0][1] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 6° Forma de ganhar
-                if ((tabuleiro[0][2] == tabuleiro[1][2] && tabuleiro[1][2] == tabuleiro[2][2]) && tabuleiro[0][2] != ' ') {
-                  if (tabuleiro[0][2] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 7° Forma de ganhar
-                if ((tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2]) && tabuleiro[0][0] != ' ') {
-                  if (tabuleiro[0][0] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
-                  }
-                }
-
-                // 8° Forma de ganhar
-                if ((tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0]) && tabuleiro[0][2] != ' ') {
-                  if (tabuleiro[0][2] == 'X' && optionChar == 'X') {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                    jogador[jogadorUm].vitoria += 1;
-                    jogador[jogadorDois].derrota += 1;
-                    quebrarLoop = 1;
-                  } else {
-                    printf("Jogador %s Venceu!\n", jogador[jogadorDois].nome);
-                    jogador[jogadorDois].vitoria += 1;
-                    jogador[jogadorUm].derrota += 1;
-                    quebrarLoop = 1;
+                // Condição de vitória e adesão dos pontos
+                for (int i = 0; i < 8; i++) {
+                  if ((tabuleiro[posTab[i][0]][posTab[i][1]] == tabuleiro[posTab[i][2]][posTab[i][3]] &&
+                  tabuleiro[posTab[i][2]][posTab[i][3]] == tabuleiro[posTab[i][4]][posTab[i][5]]) &&
+                  tabuleiro[posTab[i][0]][posTab[i][1]] != ' ') {
+                    if ((tabuleiro[posTab[i][0]][posTab[i][1]] == 'X' && optionChar == 'X') || (tabuleiro[posTab[i][0]][posTab[i][1]] == 'O' && optionChar == 'O')) {
+                      printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
+                      jogador[jogadorUm].vitoria += 1;
+                      jogador[jogadorDois].derrota += 1;
+                      quebrarLoop = 1;
+                    }
                   }
                 }
 
