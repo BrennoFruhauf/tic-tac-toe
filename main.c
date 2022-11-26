@@ -27,6 +27,7 @@ void limpar_tela();
 void ordenarJogadores();
 void exibirTabela();
 void exibirJogoDaVelha();
+void exibirLogo();
 void aguardar(float tempoEmSegundos);
 int validarResposta(char resposta);
 int validarSimbolo(char caracter);
@@ -48,16 +49,22 @@ int main() {
                       {0, 2, 1, 2, 2, 2},
                       {0, 0, 1, 1, 2, 2},
                       {0, 2, 1, 1, 2, 0}};
-
+  exibirLogo();
+  limpar_tela();
   // Definindo semi loop para o jogo
   do {
+    FILE *arq = fopen("logo/logo0.txt", "r");
+    char txt[200];
+    while(fgets(txt, sizeof(txt), arq) != NULL)
+      printf("%s", txt);
+
     // Loop de validação do input
     do {
       // Menu principal do jogo
-      printf("1 - Iniciar um novo jogo\n");
-      printf("2 - Ver placar\n");
-      printf("3 - Sair\n");
-      printf("\nOpção: ");
+      printf("\n\n\n\t\t\t\t\t     1 - Iniciar um novo jogo\n");
+      printf("\t\t\t\t\t     2 - Ver placar\n");
+      printf("\t\t\t\t\t     3 - Sair\n");
+      printf("\n\t\t\t\t\t     Opção: ");
       validar = scanf("%d", &option);
       fflush(stdin);
       limpar_tela();
@@ -69,7 +76,7 @@ int main() {
 
       case 1:
         for (int i = 0; i < 2; i++) {
-          printf("Informe o nome dos jogadores:\n");
+          printf("\nInforme o nome dos jogadores:\n");
           printf("%d° Jogador: ", i + 1);
           fgets(nome, 25, stdin);
           fflush(stdin);
@@ -119,7 +126,7 @@ int main() {
         do {
           do {
             do {
-              printf("Quem será o primeiro a jogar?\nDigite 1 para %s e 2 para %s", jogador[jogadorUm].nome, jogador[jogadorDois].nome);
+              printf("\nQuem será o primeiro a jogar?\nDigite 1 para %s e 2 para %s", jogador[jogadorUm].nome, jogador[jogadorDois].nome);
               printf("\nOpção: ");
               validar = scanf("%d", &option);
               fflush(stdin);
@@ -136,19 +143,19 @@ int main() {
               jogadorDois = aux;
               validar = TRUE;
             } else {
-              printf("Opção inválida!\n");
+              printf("\nOpção inválida!\n");
               aguardar(3);
               limpar_tela();
             }
           } while (validar != TRUE);
 
-          printf("Primeiro a jogar: %s\nSegundo a jogar: %s\n", jogador[jogadorUm].nome, jogador[jogadorDois].nome);
+          printf("\nPrimeiro a jogar: %s\nSegundo a jogar: %s\n\n", jogador[jogadorUm].nome, jogador[jogadorDois].nome);
           system("pause");
           limpar_tela();
 
           // O primeiro a jogar escolhe qual vai ser: O ou X
           do {
-            printf("%s, qual deseja ser? X ou O (digite a letra)\n", jogador[jogadorUm].nome);
+            printf("\n%s, qual deseja ser? X ou O (digite a letra)\n", jogador[jogadorUm].nome);
             printf("Quero ser: ");
             scanf("%c", &optionChar);
             optionChar = toupper(optionChar);
@@ -185,25 +192,25 @@ int main() {
                 exibirJogoDaVelha();
                 printf("\n");
                 if (tabuleiro[0][0] == ' ')
-                  printf("ES - Esquerda Superior\n");
+                  printf("\t\t\t\t\t     ES - Esquerda Superior\n");
                 if (tabuleiro[0][1] == ' ')
-                  printf("CS - Centro Superior\n");
+                  printf("\t\t\t\t\t     CS - Centro Superior\n");
                 if (tabuleiro[0][2] == ' ')
-                  printf("DS - Direita Superior\n");
+                  printf("\t\t\t\t\t     DS - Direita Superior\n");
                 if (tabuleiro[1][0] == ' ')
-                  printf("EM - Esquerda do Meio\n");
+                  printf("\t\t\t\t\t     EM - Esquerda do Meio\n");
                 if (tabuleiro[1][1] == ' ')
-                  printf("CM - Centro do Meio\n");
+                  printf("\t\t\t\t\t     CM - Centro do Meio\n");
                 if (tabuleiro[1][2] == ' ')
-                  printf("DM - Direita do Meio\n");
+                  printf("\t\t\t\t\t     DM - Direita do Meio\n");
                 if (tabuleiro[2][0] == ' ')
-                  printf("EI - Esquerda Inferior\n");
+                  printf("\t\t\t\t\t     EI - Esquerda Inferior\n");
                 if (tabuleiro[2][1] == ' ')
-                  printf("CI - Centro Inferior\n");
+                  printf("\t\t\t\t\t     CI - Centro Inferior\n");
                 if (tabuleiro[2][2] == ' ')
-                  printf("DI - Direita Inferior\n");
+                  printf("\t\t\t\t\t     DI - Direita Inferior\n");
 
-                printf("\n%s, Digite a sigla para preencher a posição: ", jogador[jogando].nome);
+                printf("\n\t\t\t     %s, Digite a sigla para preencher a posição: ", jogador[jogando].nome);
                 fgets(posicao, 5, stdin);
                 fflush(stdin);
                 limpar_tela();
@@ -235,25 +242,40 @@ int main() {
               if ((tabuleiro[posTab[i][0]][posTab[i][1]] == tabuleiro[posTab[i][2]][posTab[i][3]] &&
               tabuleiro[posTab[i][2]][posTab[i][3]] == tabuleiro[posTab[i][4]][posTab[i][5]]) &&
               tabuleiro[posTab[i][0]][posTab[i][1]] != ' ') {
-                if (tabuleiro[posTab[i][0]][posTab[i][1]] == 'X' && optionChar == 'X') {
-                  printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                  jogador[jogadorUm].vitoria += 1;
-                  jogador[jogadorDois].derrota += 1;
-                  quebrarLoop = 1;
+                if (tabuleiro[posTab[i][0]][posTab[i][1]] == 'X') {
+                    if (optionChar == 'X') {
+                      strcpy(nome, jogador[jogadorUm].nome);
+                      jogador[jogadorUm].vitoria += 1;
+                      jogador[jogadorDois].derrota += 1;
+                      quebrarLoop = 1;
+                    } else {
+                      strcpy(nome, jogador[jogadorDois].nome);
+                      jogador[jogadorDois].vitoria += 1;
+                      jogador[jogadorUm].derrota += 1;
+                      quebrarLoop = 1;
+                    }
                 }
-                if (tabuleiro[posTab[i][0]][posTab[i][1]] == 'O' && optionChar == 'O') {
-                  printf("Jogador %s Venceu!\n", jogador[jogadorUm].nome);
-                  jogador[jogadorUm].vitoria += 1;
-                  jogador[jogadorDois].derrota += 1;
-                  quebrarLoop = 1;
+                if (tabuleiro[posTab[i][0]][posTab[i][1]] == 'O') {
+                  if (optionChar == 'O') {
+                      strcpy(nome, jogador[jogadorUm].nome);
+                      jogador[jogadorUm].vitoria += 1;
+                      jogador[jogadorDois].derrota += 1;
+                      quebrarLoop = 1;
+                    } else {
+                      strcpy(nome, jogador[jogadorDois].nome);
+                      jogador[jogadorDois].vitoria += 1;
+                      jogador[jogadorUm].derrota += 1;
+                      quebrarLoop = 1;
+                    }
                 }
               }
             }
 
             if (quebrarLoop == 1) {
               exibirJogoDaVelha();
-              aguardar(3);
-              printf("\n");
+              printf("\n\t\t\t\t\t     Jogador %s Venceu!\n", nome);
+              Sleep(2000);
+              printf("\n\t\t\t\t");
               system("pause");
             }
           } while (aux < 9 && quebrarLoop != 1);
@@ -269,7 +291,7 @@ int main() {
           }
           limpar_tela();
           do {
-            printf("Deseja continuar? (Digite S para sim ou N para não)\n");
+            printf("\nDeseja continuar? (Digite S para sim ou N para não)\n");
             printf("Resposta: ");
             scanf("%c", &resposta);
             fflush(stdin);
@@ -362,12 +384,16 @@ int validarPosicao(char posicao[5]) {
 
 // Função para exibir o tabuleiro do jogo da velha
 void exibirJogoDaVelha() {
-  printf("\nJOGO DA VELHA\n\n");
-  printf(" %c | %c | %c \n", tabuleiro[0][0], tabuleiro[0][1], tabuleiro[0][2]);
-  printf("-----------\n");
-  printf(" %c | %c | %c \n", tabuleiro[1][0], tabuleiro[1][1], tabuleiro[1][2]);
-  printf("-----------\n");
-  printf(" %c | %c | %c \n", tabuleiro[2][0], tabuleiro[2][1], tabuleiro[2][2]);
+  FILE *arq = fopen("logo/logo0.txt", "r");
+  char txt[200];
+  while(fgets(txt, sizeof(txt), arq) != NULL)
+    printf("%s", txt);
+  printf("\n\n\n");
+  printf("\t\t\t\t\t          %c | %c | %c \n", tabuleiro[0][0], tabuleiro[0][1], tabuleiro[0][2]);
+  printf("\t\t\t\t\t         -----------\n");
+  printf("\t\t\t\t\t          %c | %c | %c \n", tabuleiro[1][0], tabuleiro[1][1], tabuleiro[1][2]);
+  printf("\t\t\t\t\t         -----------\n");
+  printf("\t\t\t\t\t          %c | %c | %c \n", tabuleiro[2][0], tabuleiro[2][1], tabuleiro[2][2]);
 }
 
 // Função para exibir a tabela do placar de todos jogadores registrados
@@ -460,3 +486,40 @@ void exibirTabela() {
   }
   printf("\n==================================================================================");
 }
+
+void exibirLogo(){
+	FILE *arq = fopen("logo/logo0.txt", "r");
+	char txt[200];
+
+  for (int i = 0; i < 3; i++) {
+    while(fgets(txt, sizeof(txt), arq) != NULL)
+      printf("%s", txt);
+    Sleep(200);
+    limpar_tela();
+
+    arq = fopen("logo/logo1.txt", "r");
+    while(fgets(txt, sizeof(txt), arq) != NULL)
+      printf("%s", txt);
+    Sleep(200);
+    limpar_tela();
+
+    arq = fopen("logo/logo2.txt", "r");
+    while(fgets(txt, sizeof(txt), arq) != NULL)
+      printf("%s", txt);
+    Sleep(200);
+    limpar_tela();
+
+    arq = fopen("logo/logo3.txt", "r");
+    while(fgets(txt, sizeof(txt), arq) != NULL)
+      printf("%s", txt);
+    Sleep(200);
+    limpar_tela();
+
+    arq = fopen("logo/logo0.txt", "r");
+    while(fgets(txt, sizeof(txt), arq) != NULL)
+      printf("%s", txt);
+    Sleep(200);
+  }
+	fclose(arq);
+}
+

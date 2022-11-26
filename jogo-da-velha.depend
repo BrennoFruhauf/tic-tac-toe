@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669435431 source:d:\faculdade\programação estruturada\projeto final\jogo-da-velha\main.c
+1669445334 source:d:\faculdade\programação estruturada\projeto final\jogo-da-velha\main.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
