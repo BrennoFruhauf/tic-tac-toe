@@ -2,13 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7335" topLine="174" />
+			<Cursor1 position="536" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="249" />
-			<Collapse line="258" />
-		</Folding>
 	</File>
 </CodeBlocks_layout_file>
