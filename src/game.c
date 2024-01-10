@@ -7,7 +7,9 @@
 
 #include "./includes/interface.h"
 
-int id = -1, playerOne, playerTwo;
+int id = -1, playerOne, playerTwo, isPlaying;
+char playerOneSymbol, playerTwoSymbol, symbolPlaying, board[3][3];
+const char X = 'X', O = 'O';
 
 char *inputNamePlayer() {
   const int NAME_LENGTH = 25;
@@ -61,18 +63,26 @@ int insetPlayers() {
   int wasPlayerInserted = TRUE;
 
   for (int x = 0; x < 2; x++) {
-    if (id < NUMBER_OF_PLAYERS - 1)
-      printf("\n%s:\n", currentLanguage->firstOption[0]);
-    else
-      printf("\n%s:\n", currentLanguage->firstOption[1]);
+    char *name;
+    int isSameName = 0;
+    do {
+      if (isSameName) printf("\n%s!\n", cl->firstOption[5]);
 
-    printf("%d° %s: ", x + 1, currentLanguage->firstOption[2]);
-    char *name = inputNamePlayer();
+      if (id < NUMBER_OF_PLAYERS - 1)
+        printf("\n%s:\n", cl->firstOption[0]);
+      else
+        printf("\n%s:\n", cl->firstOption[1]);
+
+      printf("%s: ", cl->firstOption[x + 2]);
+
+      name = inputNamePlayer();
+      isSameName = strcmp(players[playerOne].name, name) == 0;
+    } while (isSameName);
 
     if (!checkIfPlayerExist(name, x) && id < NUMBER_OF_PLAYERS - 1)
       createNewPlayer(name, x);
     else {
-      printf("\n%s\n", currentLanguage->firstOption[3]);
+      printf("\n%s\n", cl->firstOption[4]);
       wasPlayerInserted = FALSE;
       wait(5);
       system("cls");
@@ -83,8 +93,76 @@ int insetPlayers() {
   return wasPlayerInserted;
 }
 
+void chooseFirstToPlay() {
+  int option, validation;
+  do {
+    printf("\n%s?\n", cl->firstOption[6]);
+    printf("%s 1 %s %s ", cl->general[2], cl->general[3],
+           players[playerOne].name);
+    printf("%s 2 %s %s ", cl->general[4], cl->general[3],
+           players[playerTwo].name);
+    printf("\n%s: ", cl->general[1]);
+
+    validation = scanf("%d", &option);
+    fflush(stdin);
+
+    validation = validation && (option >= 1 && option <= 2);
+
+    if (validation && option == 2) {
+      int temp = playerOne;
+      playerOne = playerTwo;
+      playerTwo = temp;
+    }
+
+    system("cls");
+
+    if (!validation) {
+      printf("\n%s!\n", cl->general[5]);
+      wait(3);
+      system("cls");
+    }
+  } while (!validation);
+}
+
+void showOrder() {
+  printf("\n%s: %s\n", cl->firstOption[7], players[playerOne].name);
+  printf("\n%s: %s\n", cl->firstOption[8], players[playerTwo].name);
+  system("pause");
+  system("cls");
+}
+
+void chooseSymbol() {
+  char option;
+  int isValidSymbol;
+
+  do {
+    printf("\n%s, %s? X %s O (%s)", players[playerOne].name, cl->firstOption[9],
+           cl->general[4], cl->firstOption[10]);
+    printf("\n%s: ", cl->firstOption[11]);
+    scanf("%c", &option);
+    fflush(stdin);
+    system("cls");
+
+    option = toupper(option);
+    isValidSymbol = (option == X || option == O);
+  } while (!isValidSymbol);
+
+  if (option == X) {
+    playerOneSymbol = X;
+    playerTwoSymbol = O;
+    return;
+  }
+
+  playerOneSymbol = O;
+  playerTwoSymbol = X;
+}
+
 void game() {
   if (!insetPlayers()) return;
+
+  chooseFirstToPlay();
+  showOrder();
+  chooseSymbol();
 
   printf("Jogando\n");
   exit(1);
