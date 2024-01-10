@@ -8,7 +8,6 @@
 #include "./includes/game.h"
 
 PlayerData players[NUMBER_OF_PLAYERS];
-char board[3][3];
 char *path = NULL;
 char *lang = "en";
 char *imagesPath[4];
@@ -18,23 +17,38 @@ char inputChar;
 
 LanguageStrings english = {
     "en_US.UTF-8",
-    {"TL", "TM", "TR", "CL", "CM", "CR", "LL", "LM", "LR"},
-    {"New game", "Scoreboard", "Exit", "Option"},
+    "\t\t\t\t",
+    {"TL", "TC", "TR", "CL", "CC", "CR", "BL", "BC", "BR"},
+    {"Top Left", "Top Center", "Top Right", "Center Left", "Central Center",
+     "Center Right", "Bottom Left", "Bottom Center", "Bottom Right"},
+    {"New game", "Scoreboard", "Exit"},
     {"Enter the player's name", "Enter an already registered player name",
-     "Player",
-     "Match cancelled: Number of registered players reached maximum!"},
-    {"Wait"}};
+     "First player", "Second player",
+     "Match cancelled: Number of registered players reached maximum!",
+     "First and second player can't be the same player",
+     "Who will be the first to play", "First to play", "Second to play",
+     "What do you want to be", "type the letter", "I want to be",
+     "Enter the abbreviation to fill the position"},
+    {"Wait", "Option", "Enter", "to", "or", "Invalid option"}};
 
 LanguageStrings portuguese = {
     "Portuguese_Brazil",
-    {"ES", "CS", "DS", "EC", "MC", "DC", "EI", "CI", "DI"},
-    {"Novo jogo", "Placar", "Sair", "Opção"},
+    "\t\t\t\t\t",
+    {"ES", "CS", "DS", "EC", "CC", "DC", "EI", "CI", "DI"},
+    {"Esquerda Superior", "Centro Superior", "Direita Superior",
+     "Esquerda Central", "Centro Central", "Direita Central",
+     "Esquerda Inferior", "Centro Inferior", "Direita Inferior"},
+    {"Novo jogo", "Placar", "Sair"},
     {"Insira o nome do jogador", "Insira um nome de jogador já cadastrado",
-     "Jogador",
-     "Partida cancelada: Número de jogadores cadastros chegou ao máximo!"},
-    {"Aguarde"}};
+     "Primeiro jogador", "Segundo jogador",
+     "Partida cancelada: Número de jogadores cadastros chegou ao máximo!",
+     "Primeiro e segundo jogador não podem ser o mesmo jogador",
+     "Quem será o primeiro a jogar?", "Primeira à jogar", "Segundo à jogar",
+     "O que você quer ser", "digite a letra", "Eu quero ser",
+     "Digite a sigla para preencher a posição"},
+    {"Aguarde", "Opção", "Digite", "para", "ou", "Opção inválida"}};
 
-LanguageStrings *currentLanguage = &english;
+LanguageStrings *cl = &english;
 
 char *obtainLanguage(int argc, char *argv[]) {
   char *defaultLang = "en", *ptLang = "pt";
@@ -86,7 +100,7 @@ void showLogo() {
 
 void wait(float timeInSeconds) {
   timeInSeconds /= 5;
-  printf("\n%s", currentLanguage->general[0]);
+  printf("\n%s", cl->general[0]);
   for (int i = 0; i < 5; i++) {
     Sleep(timeInSeconds * 1000);
     printf(" .");
@@ -98,10 +112,10 @@ int showMainMenu() {
   do {
     showImage(imagesPath[0]);
 
-    printf("\n\n\n\t\t\t\t\t     1 - %s\n", currentLanguage->mainMenu[0]);
-    printf("\t\t\t\t\t     2 - %s\n", currentLanguage->mainMenu[1]);
-    printf("\t\t\t\t\t     3 - %s\n", currentLanguage->mainMenu[2]);
-    printf("\n\t\t\t\t\t     %s: ", currentLanguage->mainMenu[3]);
+    printf("\n\n\n%s     1 - %s\n", cl->tabulation, cl->mainMenu[0]);
+    printf("%s     2 - %s\n", cl->tabulation, cl->mainMenu[1]);
+    printf("%s     3 - %s\n", cl->tabulation, cl->mainMenu[2]);
+    printf("\n%s     %s: ", cl->tabulation, cl->general[1]);
 
     validation = scanf("%d", &inputInt);
     fflush(stdin);

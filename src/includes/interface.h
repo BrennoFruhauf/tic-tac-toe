@@ -12,10 +12,12 @@ typedef struct {
 
 typedef struct {
   const char *locale;
-  const char *positionAcronym[9];
-  const char *mainMenu[4];
-  const char *firstOption[4];
-  const char *general[1];
+  const char *tabulation;
+  const char *boardPosition[9];
+  const char *positionName[9];
+  const char *mainMenu[3];
+  const char *firstOption[13];
+  const char *general[6];
 } LanguageStrings;
 
 extern PlayerData players[NUMBER_OF_PLAYERS];
@@ -26,11 +28,12 @@ extern char *imagesPath[4];
 
 extern LanguageStrings english;
 extern LanguageStrings portuguese;
-extern LanguageStrings *currentLanguage;
+extern LanguageStrings *cl;
 
 char *getPath(char *path);
 char *obtainLanguage(int argc, char *argv[]);
 
+void showImage(char *imagePath);
 void showLogo();
 int showMainMenu();
 

@@ -7,9 +7,9 @@ int main(int argc, char *argv[]) {
   lang = obtainLanguage(argc, argv);
   path = getPath(argv[0]);
 
-  if (strcmp(lang, "pt") == 0) currentLanguage = &portuguese;
+  if (strcmp(lang, "pt") == 0) cl = &portuguese;
 
-  setlocale(LC_ALL, currentLanguage->locale);
+  setlocale(LC_ALL, cl->locale);
   showLogo();
 
   int option;
