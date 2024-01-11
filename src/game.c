@@ -10,6 +10,13 @@
 int id = -1, playerOne, playerTwo, isPlaying;
 char playerOneSymbol, playerTwoSymbol, symbolPlaying, board[3][3];
 const char X = 'X', O = 'O';
+int winPosition[8][6] = {{0, 0, 0, 1, 0, 2}, {1, 0, 1, 1, 1, 2},
+                         {2, 0, 2, 1, 2, 2}, {0, 0, 1, 0, 2, 0},
+                         {0, 1, 1, 1, 2, 1}, {0, 2, 1, 2, 2, 2},
+                         {0, 0, 1, 1, 2, 2}, {0, 2, 1, 1, 2, 0}};
+
+int positionCoordinate[9][2] = {{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1},
+                                {1, 2}, {2, 0}, {2, 1}, {2, 2}};
 
 char *inputNamePlayer() {
   const int NAME_LENGTH = 25;
@@ -157,12 +164,111 @@ void chooseSymbol() {
   playerTwoSymbol = X;
 }
 
+void showAvailablePositions() {
+  int count = -1;
+  for (int x = 0; x < 3; x++) {
+    for (int y = 0; y < 3; y++) {
+      count++;
+      if (board[x][y] == ' ') {
+        printf("%s     ", cl->tabulation);
+        printf("%s - ", cl->boardPosition[count]);
+        printf("%s\n", cl->positionName[count]);
+      }
+    }
+  }
+}
+
+void showBoard() {
+  showImage(imagesPath[0]);
+
+  printf("\n\n\n");
+  for (int x = 0; x < 3; x++) {
+    printf("%s          ", cl->tabulation);
+    printf("%c | %c | %c \n", board[x][0], board[x][1], board[x][2]);
+
+    if (x < 2) printf("%s         -----------\n", cl->tabulation);
+  }
+}
+
+int isValidPosition(char *position) {
+  for (int x = 0; x < 9; x++) {
+    int axisY = positionCoordinate[x][0], axisX = positionCoordinate[x][1];
+    if (!strcmp(position, cl->boardPosition[x]) && board[axisY][axisX] == ' ') {
+      board[axisY][axisX] = symbolPlaying;
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+void play() {
+  char position[4];
+  do {
+    showBoard();
+    printf("\n");
+
+    showAvailablePositions();
+    const char *tabulation = (strcmp(lang, "en") == 0) ? "\t\t" : "\t\t\t";
+    printf("\n%s     %s, ", tabulation, players[isPlaying].name);
+    printf("%s: ", cl->firstOption[12]);
+
+    fgets(position, 4, stdin);
+    fflush(stdin);
+    system("cls");
+
+    for (int x = 0; position[x] != '\0'; x++)
+      position[x] = toupper(position[x]);
+
+    position[strlen(position) - 1] = '\0';
+  } while (!isValidPosition(position));
+}
+
+void clearBoard() {
+  for (int x = 0; x < 3; x++) {
+    for (int y = 0; y < 3; y++) board[x][y] = ' ';
+  }
+}
+
+void changeCurrentPlayer(int round) {
+  const int IS_EVEN = !(round % 2);
+  if (IS_EVEN) {
+    isPlaying = playerOne;
+    symbolPlaying = playerOneSymbol;
+    return;
+  }
+
+  isPlaying = playerTwo;
+  symbolPlaying = playerTwoSymbol;
+}
+
+int checkEndCondition(int round) {
+  int availableWinCondition = 0;
+
+  for (int x = 0; x < 8; x++) {
+  }
+}
+
+void gameMatch() {
+  int currentRound = -1;
+  do {
+    currentRound++;
+    changeCurrentPlayer(currentRound);
+    play();
+    checkEndCondition(currentRound);
+
+  } while (1);
+}
+
 void game() {
   if (!insetPlayers()) return;
 
   chooseFirstToPlay();
   showOrder();
   chooseSymbol();
+
+  clearBoard();
+  gameMatch();
 
   printf("Jogando\n");
   exit(1);
