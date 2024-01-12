@@ -304,7 +304,7 @@ void gameMatch() {
     char symbolWinner = (endCondition == -1) ? 'X' : 'O';
     char *winnerName;
 
-    if (playerOneSymbol == symbolWinner || playerOneSymbol == symbolWinner) {
+    if (playerOneSymbol == symbolWinner) {
       winnerName = players[playerOne].name;
       players[playerOne].win++;
       players[playerTwo].lose++;
