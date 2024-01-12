@@ -242,22 +242,83 @@ void changeCurrentPlayer(int round) {
   symbolPlaying = playerTwoSymbol;
 }
 
-int checkEndCondition(int round) {
+int checkEndCondition() {
   int availableWinCondition = 0;
 
   for (int x = 0; x < 8; x++) {
+    char positions[3] = {board[winPosition[x][0]][winPosition[x][1]],
+                         board[winPosition[x][2]][winPosition[x][3]],
+                         board[winPosition[x][4]][winPosition[x][5]]};
+
+    int x = 0, o = 0, empty = 0;
+    for (int y = 0; y < 3; y++) {
+      if (positions[y] == 'X') x++;
+      if (positions[y] == 'O') o++;
+      if (positions[y] == ' ') empty++;
+    }
+
+    if (x == 3) return -1;
+    if (o == 3) return -2;
+
+    if ((x == 0 && o > 0) || (o == 0 && x > 0) || (empty == 3))
+      availableWinCondition++;
   }
+
+  return availableWinCondition;
+}
+
+void announceDraw() {
+  players[playerOne].draw++;
+  players[playerTwo].draw++;
+
+  showBoard();
+  printf("\n%s           %s!\n", cl->tabulation, cl->firstOption[13]);
+
+  wait(3);
+  printf("\n");
+  system("pause");
+  system("cls");
+}
+
+void announceWinner(char *name) {
+  showBoard();
+  printf("\n%s     %s %s %s!\n", cl->tabulation, cl->general[6], name,
+         cl->firstOption[14]);
+  wait(3);
+  printf("\n%s", cl->tabulation);
+
+  system("pause");
+  system("cls");
 }
 
 void gameMatch() {
-  int currentRound = -1;
+  int currentRound = -1, endCondition;
   do {
     currentRound++;
     changeCurrentPlayer(currentRound);
     play();
-    checkEndCondition(currentRound);
+    endCondition = checkEndCondition();
+  } while (endCondition > 0);
 
-  } while (1);
+  if (endCondition == -1 || endCondition == -2) {
+    char symbolWinner = (endCondition == -1) ? 'X' : 'O';
+    char *winnerName;
+
+    if (playerOneSymbol == symbolWinner || playerOneSymbol == symbolWinner) {
+      winnerName = players[playerOne].name;
+      players[playerOne].win++;
+      players[playerTwo].lose++;
+    } else {
+      winnerName = players[playerTwo].name;
+      players[playerTwo].win++;
+      players[playerOne].lose++;
+    }
+
+    announceWinner(winnerName);
+    return;
+  }
+
+  announceDraw();
 }
 
 void game() {
