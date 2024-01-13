@@ -83,12 +83,14 @@ int insetPlayers() {
       printf("%s: ", cl->firstOption[x + 2]);
 
       name = inputNamePlayer();
-      isSameName = strcmp(players[playerOne].name, name) == 0;
+      if (x == 0) isSameName = strcmp(players[playerOne].name, name) == 0;
     } while (isSameName);
 
-    if (!checkIfPlayerExist(name, x) && id < NUMBER_OF_PLAYERS - 1)
+    int playerExists = checkIfPlayerExist(name, x);
+
+    if (!playerExists && id < NUMBER_OF_PLAYERS - 1)
       createNewPlayer(name, x);
-    else {
+    else if (!playerExists && id == NUMBER_OF_PLAYERS) {
       printf("\n%s\n", cl->firstOption[4]);
       wasPlayerInserted = FALSE;
       wait(5);
@@ -291,6 +293,21 @@ void announceWinner(char *name) {
   system("cls");
 }
 
+int wantToPlayAgain() {
+  char option;
+  do {
+    printf("\n%s\n", cl->firstOption[15]);
+    printf("Resposta: ");
+    scanf("%s", &option);
+    fflush(stdin);
+    option = toupper(option);
+    system("cls");
+  } while (
+      !(strcmp(&option, cl->general[7]) || strcmp(&option, cl->general[8])));
+
+  return !strcmp(&option, cl->general[7]) ? TRUE : FALSE;
+}
+
 void gameMatch() {
   int currentRound = -1, endCondition;
   do {
@@ -322,15 +339,16 @@ void gameMatch() {
 }
 
 void game() {
+  playerOne = -1;
+  playerTwo = -1;
   if (!insetPlayers()) return;
 
-  chooseFirstToPlay();
-  showOrder();
-  chooseSymbol();
+  do {
+    chooseFirstToPlay();
+    showOrder();
+    chooseSymbol();
 
-  clearBoard();
-  gameMatch();
-
-  printf("Jogando\n");
-  exit(1);
+    clearBoard();
+    gameMatch();
+  } while (wantToPlayAgain());
 }

@@ -28,8 +28,10 @@ LanguageStrings english = {
      "First and second player can't be the same player",
      "Who will be the first to play", "First to play", "Second to play",
      "What do you want to be", "type the letter", "I want to be",
-     "Enter the abbreviation to fill the position", "DRAW", "Won"},
-    {"Wait", "Option", "Enter", "to", "or", "Invalid option", "Player"}};
+     "Enter the abbreviation to fill the position", "DRAW", "Won",
+     "Do you want to continue? (Enter Y for yes or N for no)"},
+    {"Wait", "Option", "Enter", "to", "or", "Invalid option", "Player", "Y",
+     "N"}};
 
 LanguageStrings portuguese = {
     "Portuguese_Brazil",
@@ -45,8 +47,10 @@ LanguageStrings portuguese = {
      "Primeiro e segundo jogador não podem ser o mesmo jogador",
      "Quem será o primeiro a jogar?", "Primeira à jogar", "Segundo à jogar",
      "O que você quer ser", "digite a letra", "Eu quero ser",
-     "Digite a sigla para preencher a posição", "EMPATE", "Venceu"},
-    {"Aguarde", "Opção", "Digite", "para", "ou", "Opção inválida", "Jogador"}};
+     "Digite a sigla para preencher a posição", "EMPATE", "Venceu",
+     "Deseja continuar? (Digite S para sim ou N para não)"},
+    {"Aguarde", "Opção", "Digite", "para", "ou", "Opção inválida", "Jogador",
+     "S", "N"}};
 
 LanguageStrings *cl = &english;
 

@@ -16,8 +16,8 @@ typedef struct {
   const char *boardPosition[9];
   const char *positionName[9];
   const char *mainMenu[3];
-  const char *firstOption[15];
-  const char *general[7];
+  const char *firstOption[16];
+  const char *general[9];
 } LanguageStrings;
 
 extern PlayerData players[NUMBER_OF_PLAYERS];
