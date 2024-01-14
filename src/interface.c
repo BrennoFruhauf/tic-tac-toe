@@ -31,7 +31,8 @@ LanguageStrings english = {
      "Enter the abbreviation to fill the position", "DRAW", "Won",
      "Do you want to continue? (Enter Y for yes or N for no)"},
     {"Wait", "Option", "Enter", "to", "or", "Invalid option", "Player", "Y",
-     "N"}};
+     "N", "Thanks for playing, come back often!", "Invalid option!",
+     "SCOREBOARD UNAVAILABLE!"}};
 
 LanguageStrings portuguese = {
     "Portuguese_Brazil",
@@ -50,7 +51,8 @@ LanguageStrings portuguese = {
      "Digite a sigla para preencher a posição", "EMPATE", "Venceu",
      "Deseja continuar? (Digite S para sim ou N para não)"},
     {"Aguarde", "Opção", "Digite", "para", "ou", "Opção inválida", "Jogador",
-     "S", "N"}};
+     "S", "N", "Obrigado por jogar, volte sempre!", "Opção Inválida!",
+     "PLACAR INDISPONÍVEL!"}};
 
 LanguageStrings *cl = &english;
 
@@ -111,6 +113,113 @@ void wait(float timeInSeconds) {
   }
 }
 
+void orderPlayers(int *p) {
+  float winPercentage[NUMBER_OF_PLAYERS];
+  const int TEMP_ID = id == NUMBER_OF_PLAYERS ? id - 1 : id;
+  for (int x = 0; x <= TEMP_ID; x++) {
+    p[x] = x;
+
+    const int WIN_WEIGHT = players[x].win * 100;
+    const int MATCHES_NUM = players[x].win + players[x].draw + players[x].lose;
+    winPercentage[x] = (float)WIN_WEIGHT / MATCHES_NUM;
+  }
+
+  float tempPercentage;
+  int tempID;
+  for (int x = 0; x <= TEMP_ID; x++) {
+    for (int y = x; y <= TEMP_ID; y++) {
+      if (winPercentage[x] < winPercentage[y]) {
+        tempPercentage = winPercentage[x];
+        winPercentage[x] = winPercentage[y];
+        winPercentage[y] = tempPercentage;
+
+        tempID = p[x];
+        p[x] = p[y];
+        p[y] = tempID;
+      }
+    }
+  }
+}
+
+void showColumn(int value) {
+  char resultInChar[4];
+  sprintf(resultInChar, "%d", value);
+  if (strlen(resultInChar) == 1)
+    printf("     %d    ||", value);
+  else
+    printf("    %d    ||", value);
+}
+
+void scoreboard() {
+  int playersOrder[NUMBER_OF_PLAYERS];
+  orderPlayers(playersOrder);
+
+  showImage(imagesPath[0]);
+  printf(
+      "\n\n===================================================================="
+      "===============\n");
+  printf(
+      "||   Ranking   ||            Name            ||    Win   ||   Lose   || "
+      " "
+      " Draw   ||\n");
+  printf(
+      "========================================================================"
+      "===========");
+
+  char stringIndex[4];
+  for (int x = 0; x < id; x++) {
+    sprintf(stringIndex, "%d", x + 1);
+
+    if (strlen(stringIndex) == 1)
+      printf("\n||      %d      ||", x + 1);
+    else
+      printf("\n||      %d     ||", x + 1);
+
+    int gapChar = 28 - strlen(players[playersOrder[x]].name);
+
+    if (gapChar % 2 != 0) {
+      gapChar /= 2;
+      for (int y = 0; y < 2; y++) {
+        for (int z = 0; z < gapChar + y; z++) printf(" ");
+        if (y == 0) printf("%s", players[playersOrder[x]].name);
+      }
+      printf("||");
+    } else {
+      gapChar /= 2;
+      for (int y = 0; y < 2; y++) {
+        for (int z = 0; z < gapChar; z++) printf(" ");
+        if (y == 0) printf("%s", players[playersOrder[x]].name);
+      }
+      printf("||");
+    }
+
+    showColumn(players[playersOrder[x]].win);
+    showColumn(players[playersOrder[x]].lose);
+    showColumn(players[playersOrder[x]].draw);
+
+    printf(
+        "\n===================================================================="
+        "="
+        "==============");
+  }
+}
+
+void showScoreboard() {
+  if (id < 0) {
+    printf("\n\t%s\n\n", cl->general[11]);
+    wait(3);
+    system("cls");
+    return;
+  }
+
+  scoreboard();
+  printf("\n");
+  wait(3);
+  printf("\n");
+  system("pause");
+  system("cls");
+}
+
 int showMainMenu() {
   int validation;
   do {
@@ -134,5 +243,18 @@ void gameMenu(int option) {
     case 1:
       game();
       break;
+
+    case 2:
+      showScoreboard();
+      break;
+
+    default:
+      if (option == 3)
+        printf("\n\n\t\t%s\n\n", cl->general[9]);
+      else
+        printf("%s\n", cl->general[10]);
+
+      wait(3);
+      system("cls");
   }
 }

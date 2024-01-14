@@ -3,7 +3,7 @@
 
 #define TRUE 1
 #define FALSE 0
-#define NUMBER_OF_PLAYERS 2
+#define NUMBER_OF_PLAYERS 10
 
 typedef struct {
   char name[25];
@@ -16,8 +16,8 @@ typedef struct {
   const char *boardPosition[9];
   const char *positionName[9];
   const char *mainMenu[3];
-  const char *firstOption[16];
-  const char *general[9];
+  const char *gameText[16];
+  const char *general[12];
 } LanguageStrings;
 
 extern PlayerData players[NUMBER_OF_PLAYERS];

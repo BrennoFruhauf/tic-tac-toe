@@ -73,17 +73,17 @@ int insetPlayers() {
     char *name;
     int isSameName = 0;
     do {
-      if (isSameName) printf("\n%s!\n", cl->firstOption[5]);
+      if (isSameName) printf("\n%s!\n", cl->gameText[5]);
 
       if (id < NUMBER_OF_PLAYERS - 1)
-        printf("\n%s:\n", cl->firstOption[0]);
+        printf("\n%s:\n", cl->gameText[0]);
       else
-        printf("\n%s:\n", cl->firstOption[1]);
+        printf("\n%s:\n", cl->gameText[1]);
 
-      printf("%s: ", cl->firstOption[x + 2]);
+      printf("%s: ", cl->gameText[x + 2]);
 
       name = inputNamePlayer();
-      if (x == 0) isSameName = strcmp(players[playerOne].name, name) == 0;
+      if (x == 1) isSameName = strcmp(players[playerOne].name, name) == 0;
     } while (isSameName);
 
     int playerExists = checkIfPlayerExist(name, x);
@@ -91,7 +91,7 @@ int insetPlayers() {
     if (!playerExists && id < NUMBER_OF_PLAYERS - 1)
       createNewPlayer(name, x);
     else if (!playerExists && id == NUMBER_OF_PLAYERS) {
-      printf("\n%s\n", cl->firstOption[4]);
+      printf("\n%s\n", cl->gameText[4]);
       wasPlayerInserted = FALSE;
       wait(5);
       system("cls");
@@ -105,7 +105,7 @@ int insetPlayers() {
 void chooseFirstToPlay() {
   int option, validation;
   do {
-    printf("\n%s?\n", cl->firstOption[6]);
+    printf("\n%s?\n", cl->gameText[6]);
     printf("%s 1 %s %s ", cl->general[2], cl->general[3],
            players[playerOne].name);
     printf("%s 2 %s %s ", cl->general[4], cl->general[3],
@@ -134,8 +134,8 @@ void chooseFirstToPlay() {
 }
 
 void showOrder() {
-  printf("\n%s: %s\n", cl->firstOption[7], players[playerOne].name);
-  printf("\n%s: %s\n", cl->firstOption[8], players[playerTwo].name);
+  printf("\n%s: %s\n", cl->gameText[7], players[playerOne].name);
+  printf("\n%s: %s\n", cl->gameText[8], players[playerTwo].name);
   system("pause");
   system("cls");
 }
@@ -145,9 +145,9 @@ void chooseSymbol() {
   int isValidSymbol;
 
   do {
-    printf("\n%s, %s? X %s O (%s)", players[playerOne].name, cl->firstOption[9],
-           cl->general[4], cl->firstOption[10]);
-    printf("\n%s: ", cl->firstOption[11]);
+    printf("\n%s, %s? X %s O (%s)", players[playerOne].name, cl->gameText[9],
+           cl->general[4], cl->gameText[10]);
+    printf("\n%s: ", cl->gameText[11]);
     scanf("%c", &option);
     fflush(stdin);
     system("cls");
@@ -213,7 +213,7 @@ void play() {
     showAvailablePositions();
     const char *tabulation = (strcmp(lang, "en") == 0) ? "\t\t" : "\t\t\t";
     printf("\n%s     %s, ", tabulation, players[isPlaying].name);
-    printf("%s: ", cl->firstOption[12]);
+    printf("%s: ", cl->gameText[12]);
 
     fgets(position, 4, stdin);
     fflush(stdin);
@@ -274,7 +274,7 @@ void announceDraw() {
   players[playerTwo].draw++;
 
   showBoard();
-  printf("\n%s           %s!\n", cl->tabulation, cl->firstOption[13]);
+  printf("\n%s           %s!\n", cl->tabulation, cl->gameText[13]);
 
   wait(3);
   printf("\n");
@@ -285,7 +285,7 @@ void announceDraw() {
 void announceWinner(char *name) {
   showBoard();
   printf("\n%s     %s %s %s!\n", cl->tabulation, cl->general[6], name,
-         cl->firstOption[14]);
+         cl->gameText[14]);
   wait(3);
   printf("\n%s", cl->tabulation);
 
@@ -295,17 +295,22 @@ void announceWinner(char *name) {
 
 int wantToPlayAgain() {
   char option;
+  int verify;
   do {
-    printf("\n%s\n", cl->firstOption[15]);
-    printf("Resposta: ");
+    printf("\n%s\n", cl->gameText[15]);
+    printf("%s: ", cl->general[2]);
     scanf("%s", &option);
     fflush(stdin);
     option = toupper(option);
     system("cls");
-  } while (
-      !(strcmp(&option, cl->general[7]) || strcmp(&option, cl->general[8])));
 
-  return !strcmp(&option, cl->general[7]) ? TRUE : FALSE;
+    verify =
+        !strcmp(&option, cl->general[7]) || !strcmp(&option, cl->general[8])
+            ? FALSE
+            : TRUE;
+  } while (verify);
+
+  return verify;
 }
 
 void gameMatch() {
