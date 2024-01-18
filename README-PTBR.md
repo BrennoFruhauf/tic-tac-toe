@@ -19,7 +19,7 @@
 
 ## 📽️ Demonstração
 
-https://github.com/BrennoFruhauf/tic-tac-toe/assets/102325604/0d9906b5-44e1-437f-8458-7d955cede18f.mp4
+https://github.com/BrennoFruhauf/tic-tac-toe/assets/102325604/cfcab2d7-c20e-4a8b-b9d9-2dba01d5674c.mp4
 
 ## 🚀 Tecnologias
 
@@ -77,17 +77,17 @@ build\tic-tac-toe.exe
 Os jogadores são identificados por um nome e este não pode ser repetido. O jogo consiste em fazer uma linha vertical ou horizontal com o seu símbolo (X ou O).
 Para realizar o movimento, o jogador que joga precisa digitar o comando correspondente à posição desejada. Os comandos disponíveis são:
   
-| **Command** |  **Position**  |
-|:-----------:|:--------------:|
-| `TL`        | Top Left       |
-| `TC`        | Top Center     |
-| `TR`        | Top Right      |
-| `CL`        | Center Left    |
-| `CC`        | Central Center |
-| `CR`        | Center Right   |
-| `BL`        | Bottom Left    |
-| `BC`        | Bottom Center  |
-| `BR`        | Bottom Right   |
+| **Comando** | **Posição**       |
+|:-----------:|:-----------------:|
+| `ES`        | Esquerda Superior |
+| `CS`        | Centro Superior   |
+| `DS`        | Direita Superior  |
+| `EC`        | Esquerda Central  |
+| `CC`        | Centro Central    |
+| `DC`        | Direita Central   |
+| `EI`        | Esquerda Inferior |
+| `CI`        | Centro Inferior   |
+| `DI`        | Direita Inferior  |
 
 </br>
 
